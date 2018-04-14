@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import EventFilter from './EventFilter';
 class Header extends Component {
 	constructor(){
 		super();
@@ -22,10 +22,14 @@ class Header extends Component {
 
   render() {
 		const { inputVal } = this.state;
-		const { showError, activeDistrict, headerHeight } = this.props;
+		const { showError, filter, handleFilter, activeDistrict, headerHeight } = this.props;
 		const headerStyle = {height:headerHeight};
 		return (
       <div style={headerStyle} className="Header">
+				<EventFilter
+					filter={filter}
+					handleFilter={handleFilter}
+				/>
 				<form onSubmit={this.handleSubmit}>
 					<input type='text' value={inputVal} onChange={this.handleChange}/>
 					<button>Submit</button>

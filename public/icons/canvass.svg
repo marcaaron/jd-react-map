@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="pattern-0" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse" viewBox="0 0 100 100">
+      <rect x="0" y="0" width="50" height="100" style="fill: black;"/>
+    </pattern>
+  </defs>
+  <ellipse style="fill: rgb(255, 110, 110); stroke: rgb(0, 0, 0);" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, 19.428786, 13.865442)" cx="3.919" cy="6.641" rx="11.233" ry="11.021"/>
+  <path d="M 17.191 12.184 L 17.191 17.62 L 6.104 17.62 L 6.104 6.533 L 16.233 6.533 L 15.152 7.642 L 7.213 7.642 L 7.213 16.511 L 16.082 16.511 L 16.082 13.314 L 17.191 12.184 Z M 17.692 6.626 L 12.478 11.969 L 10.038 9.655 L 8.321 11.37 L 12.478 15.403 L 19.408 8.342 L 17.692 6.626 Z" style="stroke: rgb(0, 0, 0); vector-effect: non-scaling-stroke; paint-order: stroke; stroke-width: 0;"/>
+</svg>

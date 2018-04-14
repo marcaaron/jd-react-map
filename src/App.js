@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Map from './components/Map';
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
 import './mapbox-gl.css';
 
@@ -13,7 +14,7 @@ const headers = {
 	"Accept-Encoding": "gzip"
 	}
 };
-
+let events = [];
 const urlPrepend = 'https://cors-anywhere.herokuapp.com/';
 
 class App extends Component {
@@ -22,15 +23,85 @@ class App extends Component {
 		this.state = {
 			activeDistrict:'',
 			showError: false,
-			geoJsonDistrict:null
+			geoJsonDistrict:null,
+			markers:null,
+			filter:'',
+			mapHeight:''
 		}
 	}
 
 	componentDidMount(){
+		const url = `${urlPrepend}http://jd-maps.gigalixirapp.com/api/events`;
+		const getMarkers = (url) => {
+			return fetch(url, headers)
+				.then(response => {
+					if(response.ok){
+						return response.json();
+					}
+					throw new Error('Unable to Fetch Events');
+				})
+				.then(data=>{
+					events = data;
+					const markers = data;
+					this.setState({markers});
+				})
+		}
+		getMarkers(url);
+	}
+
+	handleFilter = (filter) => {
+		this.updateMarkers(filter);
+		this.setState({filter});
+	}
+
+	getMapHeight = (height) =>{
+		const mapHeight = height;
+		this.setState({mapHeight});
+	}
+
+	updateMarkers = (filter) => {
+		let markers = events;
+
+		// Get event type list...
+		// let markerBox = [];
+		// markers.forEach(marker=>{
+		// 	if(!markerBox.includes(marker.type)){
+		// 		console.log(marker.type);
+		// 	}
+		// 	markerBox.push(marker.type);
+		// });
+
+		this.clearMarkers();
+		if(filter !== 'All'){
+			markers = events.filter(event=>{
+				switch(filter){
+					case 'Canvass':
+					if(event.type==='Canvass') return event;
+					break;
+					case 'Tabling':
+					if((event.type === 'Tabling or Clipboarding') || (event.type === 'Tabling or clipboarding')) return event;
+					break;
+					case 'Phone Banks':
+					if((event.type==='Phonebank')||(event.type==='Phone Banks')) return event;
+					break;
+					case 'Community Event':
+					if((event.type==='Rally, march, or protest')||(event.type==='Organizing meeting')||(event.type==='Community Event')) return event;
+					break;
+					default:
+					console.warn('No Event Types with That Filter');
+				}
+				return false;
+			});
+		}
+		this.setState({markers});
+	}
+
+	clearMarkers = () => {
+		const markers = [...document.querySelectorAll('.mapboxgl-marker')];
+		markers.forEach(marker=>marker.remove());
 	}
 
 	getDistrict = (query) => {
-		console.log(query);
 		const url = `${urlPrepend}https://map.justicedemocrats.com/api/district/search?q=${query}`;
 		const fetchDistrict = (url) => {
 			return fetch(url, headers)
@@ -43,7 +114,6 @@ class App extends Component {
 				.then(data => {
 					const activeDistrict = data.district;
 					const geoJsonDistrict = data.geojson;
-					console.log(data);
 					const showError = false;
 					this.setState({showError, activeDistrict, geoJsonDistrict});
 				})
@@ -58,7 +128,7 @@ class App extends Component {
 
   render() {
 		const headerHeight='70px';
-		const {activeDistrict, geoJsonDistrict, showError} = this.state;
+		const {mapHeight, filter, markers, activeDistrict, geoJsonDistrict, showError} = this.state;
     return (
       <div className="App">
 				<Header
@@ -66,12 +136,24 @@ class App extends Component {
 					headerHeight={headerHeight}
 					activeDistrict={activeDistrict}
 					showError={showError}
+					filter={filter}
+					handleFilter={this.handleFilter}
 				/>
-				<Map
-					activeDistrict={activeDistrict}
-					geoJsonDistrict={geoJsonDistrict}
-					headerHeight={headerHeight}
-				/>
+				<div className="map-container">
+					<Map
+						getMapHeight = {this.getMapHeight}
+						markers = {markers}
+						filter = {filter}
+						events = {events}
+						activeDistrict={activeDistrict}
+						geoJsonDistrict={geoJsonDistrict}
+						headerHeight={headerHeight}
+					/>
+					{
+						mapHeight &&
+						<Sidebar mapHeight={mapHeight} markers = {markers}/>
+					}
+				</div>
       </div>
     );
   }
