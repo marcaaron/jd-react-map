@@ -4,8 +4,6 @@ import Map from './components/Map';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
-import './mapbox-gl.css';
-
 const headers = {
 	method: 'GET',
 	headers: {
