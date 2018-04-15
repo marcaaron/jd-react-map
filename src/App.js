@@ -31,7 +31,8 @@ class App extends Component {
 			previousFilter:'All',
 			positionLat:'',
 			positionLong:'',
-			center:''
+			center:'',
+      zoom: false
 		}
 	}
 
@@ -68,6 +69,12 @@ class App extends Component {
 		this.setState({mapHeight});
 	}
 
+  handleZoom = (bool) => {
+    let markers = [...this.state.markers];
+    markers = this.updateMarkersByLocation(markers);
+    this.setState({zoom:bool, markers});
+  }
+
 	updateMarkers = (filter) => {
 		if(filter !== this.state.previousFilter){
 			this.clearMarkers();
@@ -97,6 +104,7 @@ class App extends Component {
 			});
 		}
 
+    markers = this.updateMarkersByLocation(markers);
 		this.setState({markers, previousFilter:filter});
 	}
 
@@ -104,6 +112,17 @@ class App extends Component {
 		const markers = [...document.querySelectorAll('.mapboxgl-marker')];
 		markers.forEach(marker=>marker.remove());
 	}
+
+  updateMarkersByLocation = (array, location) => {
+    const center = location || this.state.center;
+    let markers = array;
+
+		function sortByDistance(a,b){
+			return (calcDistance(center.lng, center.lat, a.location.location.longitude, a.location.location.latitude)) - (calcDistance(center.lng, center.lat, b.location.location.longitude, b.location.location.latitude));
+		}
+
+		return markers.sort(sortByDistance);
+  }
 
 	getDistrict = (query) => {
 		const url = `${urlPrepend}https://map.justicedemocrats.com/api/district/search?q=${query}`;
@@ -119,7 +138,8 @@ class App extends Component {
 					const activeDistrict = data.district;
 					const geoJsonDistrict = data.geojson;
 					const showError = false;
-					this.setState({showError, activeDistrict, geoJsonDistrict});
+          const zoom = true;
+					this.setState({showError, activeDistrict, geoJsonDistrict, zoom});
 				})
 				.catch((err)=>{
 					console.log(err);
@@ -132,20 +152,9 @@ class App extends Component {
 
 	updateCenter = (center) => {
 		this.setState({center});
-	}
-
-	componentDidUpdate(){
-		if(this.state.activeDistrict && this.state.center){
-			console.log(this.state.activeDistrict, this.state.center);
-		}
-		// This is a function that sorts the markers by distance from the center of the map but must be passed this.map in order to getCenter and any FlyTo functions must be finished before we getCenter.... this function needs to run in App.js so that markers can be updated and passed to sidebar and map respectively - only problem is... in order to return the center coords the map component will update after it calls the props function. and an update triggers a zoom on the activeDistrict and re-rendering o
-
-		// const center = this.map.getCenter();
-		// function sortByDistance(a,b){
-		// 	return (calcDistance(center.lng, center.lat, a.location.location.longitude, a.location.location.latitude)) - (calcDistance(center.lng, center.lat, b.location.location.longitude, b.location.location.latitude));
-		// }
-		// let markers = this.props.markers;
-		// console.log(markers.sort(sortByDistance));
+    let markers = [...this.state.markers];
+    markers = this.updateMarkersByLocation(markers, center);
+    this.setState({markers});
 	}
 
   render() {
@@ -171,6 +180,8 @@ class App extends Component {
 						activeDistrict={activeDistrict}
 						geoJsonDistrict={geoJsonDistrict}
 						headerHeight={headerHeight}
+            handleZoom={this.handleZoom}
+            zoom={this.state.zoom}
 					/>
 					{
 						mapHeight &&

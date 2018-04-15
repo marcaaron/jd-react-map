@@ -32,8 +32,15 @@ class Map extends Component {
 				let center = {};
 				center.lng = coords.lng;
 				center.lat = coords.lat;
-				// this calls component did update and screws up the map logic
-				// this.props.updateCenter(center);
+				this.props.updateCenter(center);
+			});
+
+      this.map.on('moveend', () => {
+				let coords = this.map.getCenter();
+				let center = {};
+				center.lng = coords.lng;
+				center.lat = coords.lat;
+				this.props.updateCenter(center);
 			});
 
 			const height = document.querySelector('.mapboxgl-map').getBoundingClientRect().height;
@@ -118,7 +125,6 @@ class Map extends Component {
   }
 
 	componentDidUpdate(){
-		console.log('component updated');
 		// Add Markers
 		if(this.props.markers){
 			if(this.state.previousFilter !== this.props.filter){
@@ -179,10 +185,11 @@ class Map extends Component {
 				});
 			}
 
-			if(this.props.geoJsonDistrict){
+			if(this.props.geoJsonDistrict && this.props.zoom){
 				// Fit the user's district to the map bounds
 				const bbox = extent(this.props.geoJsonDistrict);
 				this.map.fitBounds(bbox, {padding:20});
+        this.props.handleZoom(false);
 			}
 
 		}

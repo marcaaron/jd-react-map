@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import SidebarEvent from './SidebarEvent';
 
 class Sidebar extends Component {
-	componentDidUpdate(){
-	}
   render() {
 		return (
       <div style={{height:this.props.mapHeight}} className="Sidebar">
