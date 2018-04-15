@@ -3,9 +3,12 @@
 }
 .Header{
 	display:flex;
-	align-items: center;
-	justify-content: center;
+	align-items: flex-start;
+	justify-content: space-around;
+	flex-direction: column;
+	width:100%;
 }
+
 .map-container{
 	display:flex;
 }
@@ -68,4 +71,87 @@
 
 .mapboxgl-marker{
 	background-size: cover;
+}
+
+.search-bar{
+	width:100%;
+	border-style:none;
+	height:35px;
+	font-size: 1.2em;
+	padding:0;
+	padding-left:10px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.search-bar-container{
+	padding:10px;
+	background-color: rgba(0,0,0,0.05);
+	border-radius: 5px;
+	border-style: solid inset solid solid;
+	border-color:rgba(0,0,0,0.2) rgba(0,0,0,0.1) rgba(0,0,0,0.2) rgba(0,0,0,0.2);
+	border-width: 2px;
+	display:flex;
+	/* width:90%; */
+	margin:0 auto;
+}
+.submit-btn{
+	border:none;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	height:35px;
+	width:125px;
+	padding:0;
+	font-weight: bold;
+	background-color: rgba(36,80,87,1);
+	color:white;
+	font-size: 20px;
+	display:block;
+	cursor:pointer;
+	user-select: none;
+}
+
+.search-triangle{
+	cursor:pointer;
+	height:20px;
+	margin-left: -20px;
+	align-self: center;
+}
+
+.zoom-out{
+	width:20px;
+	height:20px;
+	cursor:pointer;
+	position:absolute;
+	z-index: 999;
+	transform: translateY(105px) translateX(8px);
+	background:white;
+	padding:5px;
+	border-radius:5px;
+	border: solid 2px lightgrey;
+}
+.zoom-out:hover{
+	background:rgba(0,0,0,0.05);
+}
+.searchbar-text{
+	/* width:95%; */
+	margin:0 auto;
+	padding:0;
+}
+.district-header{
+	font-size: 1.3em;
+	line-height: 1.95em;
+	font-weight: bold;
+}
+.district-subheader{
+	font-size: 1em;
+	line-height: 1.5em;
+	margin-bottom: 10px;
 }

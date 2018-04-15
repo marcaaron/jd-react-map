@@ -175,6 +175,10 @@ class Map extends Component {
 		}
 	}
 
+	zoomOut = () => {
+		this.flyToLocation([-98.585522, 39.8333333],2.5);
+	}
+
 	render() {
 		const {headerHeight} = this.props;
 		const style = {
@@ -184,9 +188,10 @@ class Map extends Component {
       width: '70%'
     };
 
-    return (
-	      <div className="MAPBOX" key="map" style={style} ref={el => this.mapContainer = el}/>
-		);
+    return [
+	      <div className="MAPBOX" key="map" style={style} ref={el => this.mapContainer = el}/>,
+				<img onClick={this.zoomOut} key="zoom-out" alt="Zoom Out Icon" className="zoom-out" src="../icons/location.svg"/>
+		];
   }
 }
 

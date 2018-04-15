@@ -3,7 +3,8 @@ import './App.css';
 import Map from './components/Map';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import {unDuplicateEvents, listEventTypes} from './helpers/helpers';
+import {unDuplicateEvents} from './helpers/helpers';
+// import {listEventTypes} from './helpers/helpers';
 
 const headers = {
 	method: 'GET',
@@ -26,11 +27,23 @@ class App extends Component {
 			markers:null,
 			filter:'All',
 			mapHeight:'',
-			previousFilter:'All'
+			previousFilter:'All',
+			positionLat:'',
+			positionLong:''
 		}
 	}
 
 	componentDidMount(){
+		if ("geolocation" in navigator) {
+		  navigator.geolocation.getCurrentPosition((position)=>{
+				const positionLat = position.coords.latitude;
+				const positionLong = position.coords.longitude;
+  			this.setState({positionLat, positionLong});
+			});
+
+		} else {
+		  console.log('geolocation unavailable');
+		}
 		const url = `${urlPrepend}http://jd-maps.gigalixirapp.com/api/events`;
 		const getMarkers = (url) => {
 			return fetch(url, headers)
@@ -126,7 +139,7 @@ class App extends Component {
 	}
 
   render() {
-		const headerHeight='70px';
+		const headerHeight='200px';
 		const {mapHeight, filter, markers, activeDistrict, geoJsonDistrict, showError} = this.state;
     return (
       <div className="App">
