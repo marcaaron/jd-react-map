@@ -1,4 +1,4 @@
-const unDuplicateEvents = (events) => {
+export const unDuplicateEvents = (events) => {
 	let updatedEvents = [];
 	events.forEach(event=>{
 		const matchedEvent = updatedEvents.find(eventInArray => (eventInArray.title === event.title));
@@ -34,6 +34,14 @@ const unDuplicateEvents = (events) => {
 		findAnomalies(event);
 	});
 	return updatedEvents;
-}
+};
 
-export default unDuplicateEvents;
+export const listEventTypes = (events) => {
+	let eventBox = [];
+	events.forEach(event=>{
+		if(!eventBox.includes(event.type)){
+			console.log(event.type);
+		}
+		eventBox.push(event.type);
+	});
+};

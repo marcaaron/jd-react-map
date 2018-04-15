@@ -111,13 +111,15 @@ class Map extends Component {
 		if(this.props.activeDistrict){
 			const bbox = extent(this.props.geoJsonDistrict);
 			this.map.fitBounds(bbox, {padding:20});
-			console.log(this.props.geoJsonDistrict);
 		}
 
 		// Add Markers
 		if(this.props.markers){
 			if(this.state.previousFilter !== this.props.filter){
-				console.log('updating markers');
+
+				const previousFilter = this.props.filter;
+				this.setState({previousFilter});
+
 				this.props.markers.forEach(marker=>{
 					let icon;
 					switch(marker.type){
@@ -167,8 +169,7 @@ class Map extends Component {
 					}
 
 					el.addEventListener('click', clickPoint);
-					const previousFilter = this.props.filter;
-					this.setState({previousFilter});
+
 				});
 			}
 		}

@@ -3,7 +3,7 @@ import './App.css';
 import Map from './components/Map';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import unDuplicateEvents from './helpers/unDuplicateEvents';
+import {unDuplicateEvents, listEventTypes} from './helpers/helpers';
 
 const headers = {
 	method: 'GET',
@@ -43,6 +43,10 @@ class App extends Component {
 				.then(data=>{
 					events = unDuplicateEvents(data);
 					const markers = events;
+
+					// Uncomment to console.log event types...
+						// listEventTypes(markers);
+
 					this.setState({markers});
 				})
 		}
@@ -60,20 +64,11 @@ class App extends Component {
 	}
 
 	updateMarkers = (filter) => {
-		let markers = events;
-		console.log('setting markers = to events ',`current filter=${filter}`);
-
-		// Get event type list...
-		// let markerBox = [];
-		// markers.forEach(marker=>{
-		// 	if(!markerBox.includes(marker.type)){
-		// 		console.log(marker.type);
-		// 	}
-		// 	markerBox.push(marker.type);
-		// });
 		if(filter !== this.state.previousFilter){
 			this.clearMarkers();
 		}
+
+		let markers = events;
 
 		if(filter !== 'All'){
 			markers = events.filter(event=>{
