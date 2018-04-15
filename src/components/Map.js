@@ -26,6 +26,16 @@ class Map extends Component {
 		let colors=['#d0a8ff','#86b3f9','#85e2f9','#85f9b7','#cef985','#f9dd85','#f98585'];
 
 		this.map.on('load', ()=>{
+			// Listen for map moves
+			this.map.on('zoomend', () => {
+				let coords = this.map.getCenter();
+				let center = {};
+				center.lng = coords.lng;
+				center.lat = coords.lat;
+				// this calls component did update and screws up the map logic
+				// this.props.updateCenter(center);
+			});
+
 			const height = document.querySelector('.mapboxgl-map').getBoundingClientRect().height;
 			this.props.getMapHeight(height);
 			const nav = new mapboxgl.NavigationControl();
@@ -53,43 +63,43 @@ class Map extends Component {
 					}
 				};
 				const line = multiPolygonToLine(layer.source.data.geometry);
-				const lineLayer = {
-					'id': `line_${district}`,
-					'type': 'line',
-					'source': {
-						'type': 'geojson',
-						'data': line
-					},
-					"layout": {
-            "line-join": "round",
-            "line-cap": "round",
-						"visibility":"none"
-	        },
-					'paint': {
-							'line-color': '#000',
-							'line-width': 2
-					}
-				};
+				// const lineLayer = {
+				// 	'id': `line_${district}`,
+				// 	'type': 'line',
+				// 	'source': {
+				// 		'type': 'geojson',
+				// 		'data': line
+				// 	},
+				// 	"layout": {
+        //     "line-join": "round",
+        //     "line-cap": "round",
+				// 		"visibility":"none"
+	      //   },
+				// 	'paint': {
+				// 			'line-color': '#000',
+				// 			'line-width': 2
+				// 	}
+				// };
 
 				this.map.addLayer(layer);
-				this.map.addLayer(lineLayer);
+				// this.map.addLayer(lineLayer);
 
 				const clickDistrict = (e) => {
 					const bbox = extent(layer.source.data.geometry);
 					this.map.fitBounds(bbox, {padding:20});
 				}
 
-				const hoverDistrict = (e) => {
-					this.map.setLayoutProperty(`line_${district}`, 'visibility', 'visible');
-				}
-
-				const exitDistrict = (e) => {
-					this.map.setLayoutProperty(`line_${district}`, 'visibility', 'none');
-				}
+				// const hoverDistrict = (e) => {
+				// 	this.map.setLayoutProperty(`line_${district}`, 'visibility', 'visible');
+				// }
+				//
+				// const exitDistrict = (e) => {
+				// 	this.map.setLayoutProperty(`line_${district}`, 'visibility', 'none');
+				// }
 
 				this.map.on('click', district, clickDistrict);
-				this.map.on('mousemove', district, hoverDistrict);
-				this.map.on('mouseleave', district, exitDistrict);
+				// this.map.on('mousemove', district, hoverDistrict);
+				// this.map.on('mouseleave', district, exitDistrict);
 			}
 		});
 	}
@@ -108,11 +118,7 @@ class Map extends Component {
   }
 
 	componentDidUpdate(){
-		if(this.props.activeDistrict){
-			const bbox = extent(this.props.geoJsonDistrict);
-			this.map.fitBounds(bbox, {padding:20});
-		}
-
+		console.log('component updated');
 		// Add Markers
 		if(this.props.markers){
 			if(this.state.previousFilter !== this.props.filter){
@@ -172,6 +178,13 @@ class Map extends Component {
 
 				});
 			}
+
+			if(this.props.geoJsonDistrict){
+				// Fit the user's district to the map bounds
+				const bbox = extent(this.props.geoJsonDistrict);
+				this.map.fitBounds(bbox, {padding:20});
+			}
+
 		}
 	}
 

@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import {unDuplicateEvents} from './helpers/helpers';
 // import {listEventTypes} from './helpers/helpers';
+import {calcDistance} from './helpers/helpers';
 
 const headers = {
 	method: 'GET',
@@ -29,21 +30,12 @@ class App extends Component {
 			mapHeight:'',
 			previousFilter:'All',
 			positionLat:'',
-			positionLong:''
+			positionLong:'',
+			center:''
 		}
 	}
 
 	componentDidMount(){
-		if ("geolocation" in navigator) {
-		  navigator.geolocation.getCurrentPosition((position)=>{
-				const positionLat = position.coords.latitude;
-				const positionLong = position.coords.longitude;
-  			this.setState({positionLat, positionLong});
-			});
-
-		} else {
-		  console.log('geolocation unavailable');
-		}
 		const url = `${urlPrepend}http://jd-maps.gigalixirapp.com/api/events`;
 		const getMarkers = (url) => {
 			return fetch(url, headers)
@@ -138,6 +130,24 @@ class App extends Component {
 		fetchDistrict(url);
 	}
 
+	updateCenter = (center) => {
+		this.setState({center});
+	}
+
+	componentDidUpdate(){
+		if(this.state.activeDistrict && this.state.center){
+			console.log(this.state.activeDistrict, this.state.center);
+		}
+		// This is a function that sorts the markers by distance from the center of the map but must be passed this.map in order to getCenter and any FlyTo functions must be finished before we getCenter.... this function needs to run in App.js so that markers can be updated and passed to sidebar and map respectively - only problem is... in order to return the center coords the map component will update after it calls the props function. and an update triggers a zoom on the activeDistrict and re-rendering o
+
+		// const center = this.map.getCenter();
+		// function sortByDistance(a,b){
+		// 	return (calcDistance(center.lng, center.lat, a.location.location.longitude, a.location.location.latitude)) - (calcDistance(center.lng, center.lat, b.location.location.longitude, b.location.location.latitude));
+		// }
+		// let markers = this.props.markers;
+		// console.log(markers.sort(sortByDistance));
+	}
+
   render() {
 		const headerHeight='200px';
 		const {mapHeight, filter, markers, activeDistrict, geoJsonDistrict, showError} = this.state;
@@ -153,6 +163,7 @@ class App extends Component {
 				/>
 				<div className="map-container">
 					<Map
+						updateCenter = {this.updateCenter}
 						getMapHeight = {this.getMapHeight}
 						markers = {markers}
 						filter = {filter}
