@@ -6,30 +6,22 @@
 	align-items: flex-start;
 	justify-content: space-around;
 	flex-direction: column;
-	width:100%;
+	width:90%;
+  padding-left: 10px;
 }
 
 .map-container{
 	display:flex;
-}
-.Sidebar{
-	position:absolute;
-	right:0;
-	width:29%;
-	display:flex;
-	flex-direction: column;
-	overflow:scroll;
-}
-
-.SidebarEvent{
-	margin:5px;
-	background:lightgrey;
-	border: solid 1px black;
-	padding:10px;
+  margin-top: -1px;
 }
 
 .mapboxgl-marker>svg{
 	width:25px;
+}
+
+.mapboxgl-map{
+  border-top: solid 1px #ccc;
+  margin-top: -1px;
 }
 
 .event-filter{
@@ -165,4 +157,64 @@ button:focus {
   border-top: 2px solid rgba(0,0,0,0.2);
   border-left: 2px solid rgba(0,0,0,0.2);
   border-right: 2px solid rgba(0,0,0,0.2);
+}
+
+/* Sidebar Styles */
+
+.Sidebar{
+	position:absolute;
+	right:0;
+	width:30%;
+	display:flex;
+	flex-direction: column;
+	overflow:scroll;
+  border-top: solid 1px #ccc;
+}
+
+.SidebarEvent{
+	background:white;
+	border-left: solid 1px #ccc;
+	border-right: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+	padding:10px;
+}
+
+p{
+  padding:0;
+  margin:0;
+}
+
+.sidebar-info{
+  display:flex;
+  flex-direction: column;
+}
+
+.sidebar-title{
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+.sidebar-date{
+  font-size:0.8em;
+  margin-bottom: 5px;
+}
+
+.sidebar-location, .sidebar-address, .sidebar-city-state-zip{
+  font-size:0.9em;
+}
+
+.sidebar-rsvp{
+  margin-top: 10px;
+  width:70px;
+  height:30px;
+  font-size:1.2em;
+  font-weight:700;
+  background-color: rgb(36, 80, 87);
+  color:white;
+  cursor:pointer;
+}
+
+.sidebar-rsvp:hover{
+  background-color: rgb(82, 186, 203);
 }

@@ -27,21 +27,24 @@ class Map extends Component {
 
 		this.map.on('load', ()=>{
 			// Listen for map moves
-			this.map.on('zoomend', () => {
-				let coords = this.map.getCenter();
-				let center = {};
-				center.lng = coords.lng;
-				center.lat = coords.lat;
-				this.props.updateCenter(center);
-			});
+			// this.map.on('zoomend', () => {
+			// 	let coords = this.map.getCenter();
+			// 	let center = {};
+			// 	center.lng = coords.lng;
+			// 	center.lat = coords.lat;
+			// 	this.props.updateCenter(center);
+			// });
 
-      this.map.on('moveend', () => {
-				let coords = this.map.getCenter();
-				let center = {};
-				center.lng = coords.lng;
-				center.lat = coords.lat;
-				this.props.updateCenter(center);
-			});
+      // Updates App State with Map Center on moveend event
+      // Change to a button for sorting by distance...
+
+      // this.map.on('moveend', () => {
+			// 	let coords = this.map.getCenter();
+			// 	let center = {};
+			// 	center.lng = coords.lng;
+			// 	center.lat = coords.lat;
+			// 	this.props.updateCenter(center);
+			// });
 
 			const height = document.querySelector('.mapboxgl-map').getBoundingClientRect().height;
 			this.props.getMapHeight(height);
@@ -176,8 +179,14 @@ class Map extends Component {
 					// On Click Function
 					const clickPoint = (e) => {
 						// e.stopPropagation();
-						document.getElementById(`_sidebar_${marker.id}`).scrollIntoView({behavior:"smooth", block:"start", inline:"start"});
-						this.flyToLocation([long,lat], 10);
+
+          	document.getElementById(`_sidebar_${marker.id}`).scrollIntoView({
+              behavior:"smooth",
+              block:"start",
+              inline:"start"
+            });
+
+          	this.flyToLocation([long,lat], 7);
 					}
 
 					el.addEventListener('click', clickPoint);
@@ -196,7 +205,7 @@ class Map extends Component {
 	}
 
 	zoomOut = () => {
-		this.flyToLocation([-98.585522, 39.8333333],2.5);
+		this.flyToLocation([-98.585522, 39.8333333],3.5);
 	}
 
 	render() {

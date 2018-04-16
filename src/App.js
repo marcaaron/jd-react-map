@@ -70,9 +70,12 @@ class App extends Component {
 	}
 
   handleZoom = (bool) => {
-    let markers = [...this.state.markers];
-    markers = this.updateMarkersByLocation(markers);
-    this.setState({zoom:bool, markers});
+    // let markers = [...this.state.markers];
+    // markers = this.updateMarkersByLocation(markers);
+    this.setState({
+      zoom:bool
+      // markers
+    });
   }
 
 	updateMarkers = (filter) => {
@@ -104,8 +107,10 @@ class App extends Component {
 			});
 		}
 
-    markers = this.updateMarkersByLocation(markers);
-		this.setState({markers, previousFilter:filter});
+    // markers = this.updateMarkersByLocation(markers);
+		this.setState({
+      markers,
+      previousFilter:filter});
 	}
 
 	clearMarkers = () => {
