@@ -131,14 +131,16 @@ button:focus {
 	cursor:pointer;
 	position:absolute;
 	z-index: 999;
-	transform: translateY(105px) translateX(8px);
+	transform: translateY(100px) translateX(10px);
 	background:white;
 	padding:5px;
-	border-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
 	border: solid 2px lightgrey;
+  border-top: solid 1px lightgrey;
 }
 .zoom-out:hover{
-	background:rgba(0,0,0,0.05);
+	background:rgb(242, 242, 242);
 }
 .searchbar-text{
 	/* width:95%; */
@@ -154,4 +156,13 @@ button:focus {
 	font-size: 1em;
 	line-height: 1.5em;
 	margin-bottom: 10px;
+}
+
+.mapboxgl-ctrl-group{
+  box-shadow:none !important;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top: 2px solid rgba(0,0,0,0.2);
+  border-left: 2px solid rgba(0,0,0,0.2);
+  border-right: 2px solid rgba(0,0,0,0.2);
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import geoJsonData from '../GeoJSON.json';
 import extent from 'turf-extent';
-import {multiPolygonToLine} from '@turf/polygon-to-line';
+// import {multiPolygonToLine} from '@turf/polygon-to-line';
 
 class Map extends Component {
 	constructor(){
@@ -69,7 +69,7 @@ class Map extends Component {
 							'fill-opacity': 0.8
 					}
 				};
-				const line = multiPolygonToLine(layer.source.data.geometry);
+				// const line = multiPolygonToLine(layer.source.data.geometry);
 				// const lineLayer = {
 				// 	'id': `line_${district}`,
 				// 	'type': 'line',
